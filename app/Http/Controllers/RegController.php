@@ -7,19 +7,18 @@ use App\Reg;
 
 class RegController extends Controller
 {
-	//注册页面
-    public function reg(){
-    	return view("reg.index");
-    } 
+	
+    public function reg(Request $request){
+        $user_name = $request->post("user_name");
+        $user_email = $request->post("user_email");
+        $pass = $request->post("pass1");
+        $pass2 = $request->post("pass2");
 
+        $password = password_hash($pass,PASSWORD_BCRYPT);
 
-    //执行注册
-    public function regadd(){
-    	$post = request()->except("_token");
-        
-    	$res = Reg::create($post);
-    	if($res){
-    		return redirect("/user/login");
-    	}
+        $user_info = [
+
+        ];
+
     }
 }

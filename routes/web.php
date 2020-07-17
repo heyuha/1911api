@@ -24,12 +24,17 @@ Route::get("user/info","TestController@userinfo");
 Route::get("test2","TestController@test2");
 
 //注册
-Route::get("user/reg","RegController@reg");
-Route::any("user/regadd","RegController@regadd");
+Route::post("user/reg","User\IndexController@reg");
+Route::post("user/regadd","User\IndexController@regadd");
 
 //登录
-Route::get("user/login","LoginController@login");
-Route::any("user/loginadd","LoginController@loginadd");
+Route::post("user/login","User\IndexController@login");
+Route::any("user/loginadd","User\IndexController@loginadd");
 
 // 用户个人信息
-Route::any("user/center","CenterController@center");
+Route::get("user/center","User\IndexController@center");
+
+
+
+
+
