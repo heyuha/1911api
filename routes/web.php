@@ -14,6 +14,10 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/info',function(){
+    phpinfo();
+});
 Route::get("/hello","TestController@hello");
 Route::get("/wx/token","TestController@wxgettoken");
 Route::get("/wx/token2","TestController@wxgettoken2");
@@ -35,6 +39,8 @@ Route::any("user/loginadd","User\IndexController@loginadd");
 Route::get("user/center","User\IndexController@center");
 
 
-
+//联系hash
+Route::get("test/hash1","TestController@hash1");
+Route::get("test/hash2","TestController@hash2");
 
 

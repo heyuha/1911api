@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Reg;
 use App\TokenModel;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Redis;
 
 class IndexController extends Controller
 {
@@ -120,7 +121,7 @@ class IndexController extends Controller
             if($tokens){
 //                token输入正确
 //                判断时间是否过期
-                if($tokens->expires_in - time()<7200){
+                if($tokens->expires_in - time() < 7200){
                     //未过期 正常获取信息
                     $reg = Reg::where('user_id',$tokens->user_id)->first();
                     $response = [
@@ -147,7 +148,7 @@ class IndexController extends Controller
                 return $response;
             }
         }
-        
     }
+  
 
 }

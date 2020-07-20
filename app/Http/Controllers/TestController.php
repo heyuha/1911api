@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Redis;
 
 class TestController extends Controller
 {
@@ -71,5 +72,22 @@ class TestController extends Controller
         $url = "http://www.1911.com/test2";
         $response = file_get_contents($url);
         echo $response;
+    }
+
+
+    //联系hash
+    public  function hash1(){
+        $data = [
+            'name' => 'heyuhao',
+            'email' => 'ranhaogg@qq.com',
+            'age'  => '18'
+        ];
+        $hash_info = "hash_info";
+        Redis::hmset($hash_info,$data);
+    }
+    public function hash2(){
+        $res = "hash_info";
+        $data = Redis::hgetall($res);
+        print_r($data);
     }
 }
