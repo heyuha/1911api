@@ -18,8 +18,8 @@ Route::get('/', function () {
 Route::get('/info',function(){
     phpinfo();
 });
-Route::get("/hello","TestController@hello");
-Route::get("/wx/token","TestController@wxgettoken");
+Route::get("/hello","TestController@hello")->middleware('count');
+Route::get("/wx/token","TestController@wxgettoke    n");
 Route::get("/wx/token2","TestController@wxgettoken2");
 Route::get("/wx/token3","TestController@wxgettoken3");
 Route::get("/api/token","TestController@getaccesstoken");
@@ -36,11 +36,18 @@ Route::post("user/login","User\IndexController@login");
 Route::any("user/loginadd","User\IndexController@loginadd");
 
 // 用户个人信息
-Route::get("user/center","User\IndexController@center");
+Route::get("user/center","User\IndexController@center")->middleware('accesstoken','all','user');
 
 
 //联系hash
 Route::get("test/hash1","TestController@hash1");
 Route::get("test/hash2","TestController@hash2");
+
+Route::get("test/goodsstore","TestController@goodsstore");
+Route::get("test/goodsadd","TestController@goodsadd");
+
+
+Route::get("/goods/info","User\GoodsController@goods")->middleware('cishu');
+
 
 

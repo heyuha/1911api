@@ -90,4 +90,31 @@ class TestController extends Controller
         $data = Redis::hgetall($res);
         print_r($data);
     }
+
+    //测试
+    public function goodsstore(){
+
+
+    }
+    public function goodsadd(){
+        $key = "goods_store";
+        Redis::lpop($key);
+        $len = Redis::llen($key);
+        if($len<=0){
+            $data=[
+                'erron' => "00001",
+                'msg' => '库存不足'
+            ];
+            return $data;
+        }else{
+            $data=[
+                'erron' => '00002',
+                'msg' => 'ok'
+            ];
+            return $data;
+
+        }
+    }
+
+
 }

@@ -8,6 +8,7 @@ use App\Reg;
 use App\TokenModel;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Redis;
+use App\GoodsModel;
 
 class IndexController extends Controller
 {
@@ -61,10 +62,13 @@ class IndexController extends Controller
             $password = $request->post('password');
 
             $u = Reg::where(['user_name'=>$user_name])->first();
+            $user_id=$u['user_id'];
+//            dd($user_id);
             if($u){
                 //验证密码
                 $pass = password_verify($password,$u->password);
                 $token = Str::random(32);
+
                 if($pass){
                     //账号密码正确  token存数据库   设置过期时间7200秒
 
@@ -75,12 +79,24 @@ class IndexController extends Controller
                     ];
                     $res = TokenModel::insertGetId($data);
                     if($res){
+                        $key=":view:".$user_id;
+
+                        $field=$_SERVER["REQUEST_URI"];
+                        if(strpos($field,'?')){
+                            $field1=strpos($field,'?');
+                            $field2=substr($field,0,$field1);
+                            Redis::hincrby($key,$field2,1);
+                        }else{
+                            Redis::hincrby($key,$field,1);
+                        }
                         $response = [
                             'erron' => '0',
                             'msg' => 'ok',
                             'token' => $token
                         ];
                         return $response;
+
+
                     }else{
                         $response = [
                             'erron' => '60001',
@@ -107,47 +123,25 @@ class IndexController extends Controller
 
     //用户个人中心
     public function center(Request $request){
-        $token = $request ->get('token');
-//        dd($token);
-        if(empty($token)){
-            $response = [
-                'erron' => '50009',
-                'msg' => '未授权'
-            ];
-            return $response;
-        }else{
-            //已授权  判断token
-            $tokens = TokenModel::where('token',$token)->first();
-            if($tokens){
-//                token输入正确
-//                判断时间是否过期
-                if($tokens->expires_in - time() < 7200){
-                    //未过期 正常获取信息
-                    $reg = Reg::where('user_id',$tokens->user_id)->first();
-                    $response = [
-                        'erron' => 0,
-                        'msg' => 'ok',
-                        'user_name' => $reg->user_name,
-                        'user_email' => $reg->user_email
-                    ];
-                    return $response;
-                }else{
-                    //已过期给出提示
-                    $response = [
-                        'erron' => '50010',
-                        'msg' => 'token已经过期请重新获取'
-                    ];
-                    return $response;
-                }
-            }else{
-                //token不正确
-                $response = [
-                    'erron' => '50009',
-                    'msg' => 'token输入错误'
-                ];
-                return $response;
-            }
-        }
+//
+//        //拉黑  如果为true 则存在 已被拉黑给出提示
+//          $key = "s:token_black";
+//        $tokenblack=Redis::sismember($key,$token);
+//
+//        if($tokenblack){
+//            $data = [
+//                'erron' => 00004,
+//                'msg' => '你已被拉黑'
+//            ];
+//            return $data;
+//        }
+//        //签到
+//        $lahei_token = "ss:qiandao".date('ymd');
+//
+//
+////        dd($token);
+//
+//        }
     }
   
 
