@@ -50,4 +50,10 @@ Route::get("test/goodsadd","TestController@goodsadd");
 Route::get("/goods/info","User\GoodsController@goods")->middleware('cishu');
 
 
+//加密
+Route::get("/test/enc1","TestController@enc1");
+Route::get("/test/enc2","TestController@enc2");
+//验签
+Route::get("test/sign","TestController@sign");
+Route::get("test/sign2","TestController@sign2");
 

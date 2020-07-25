@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Redis;
 
+
 class TestController extends Controller
 {
     public function hello(){
@@ -116,5 +117,78 @@ class TestController extends Controller
         }
     }
 
+
+    public function enc1(){
+        $data = "Hello Wored";
+        $mehod = "AES-256-CBC";
+        $key = "1911api";
+        $iv ="aaaabbbbccccdddd";
+        $env_data = openssl_encrypt($data,$mehod,$key,OPENSSL_RAW_DATA ,$iv);
+//        echo "加密玩数据：".$env_data;
+        //转为bs64
+        //          get方法
+        $b64 = base64_encode($env_data);
+        $url = "http://www.1911.com/test/dec";
+//        $www = $url."?data=".urlencode($b64);
+//        $response = file_get_contents($www);
+//        echo $response;
+
+//        post方法
+        $client = new Client();
+        $response = $client->request('POST',$url,[
+            'form_params' => [
+                'data' => $b64
+            ]
+        ]);
+       echo $response->getBody();
+    }
+
+
+    public function enc2(){
+        $data = "你好";
+        $content = file_get_contents(storage_path('keys/www/pub.key'));
+        $puy_key = openssl_get_publickey($content);
+        openssl_public_encrypt($data,$enc_data,$puy_key);
+        $b64 = base64_encode($enc_data);
+        $url = "http://www.1911.com/test/dec2";
+        $client = new Client();
+        $response = $client->request('POST',$url,[
+            'form_params' => [
+                'data' => $b64
+            ]
+        ]);
+        echo $response->getBody();
+        $api_b64 = $response->getBody();
+        $api_data = base64_decode($api_b64);
+
+        //api私钥
+        $a_prev_key = file_get_contents(storage_path('keys/api/prev.key'));
+        $api_prev_key = openssl_get_privatekey($a_prev_key);
+        openssl_private_decrypt($api_data,$api_dec_data,$api_prev_key);
+        echo $api_dec_data;
+
+
+    }
+    //验签
+    public function sign(){
+        $key = "1911api";
+        $data = "Hello World";
+        $sign_str = md5( $data . $key );
+        $url = "http://www.1911.com/test/sign?data=".$data."&sign=".$sign_str;
+        $response = file_get_contents($url);
+        echo $response;
+    }
+
+    public function sign2(){
+        $data = "Hello World";
+        $priv_key = file_get_contents(storage_path('/keys/api/prev.key'));
+//        $priv_key_id = openssl_get_privatekey($priv_key);
+        openssl_sign($data,$prev_sign,$priv_key,OPENSSL_ALGO_SHA1);
+        $b64 = base64_encode($prev_sign);
+        $b64=urlencode($b64);
+        $url = "http://www.1911.com/test/sign2?data=".$data.'&sign='.$b64;
+        $response = file_get_contents($url);
+        echo  $response;
+    }
 
 }
