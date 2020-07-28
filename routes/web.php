@@ -56,4 +56,13 @@ Route::get("/test/enc2","TestController@enc2");
 //验签
 Route::get("test/sign","TestController@sign");
 Route::get("test/sign2","TestController@sign2");
+Route::get("test/sign3","TestController@sign3");
+Route::get("test/header1","TestController@header1");
+
+
+//列表
+Route::get("/goods/goodsinfo","Index\GoodsController@goodsinfo");
+//支付
+Route::get("/goods/pay","Index\PayController@pay");
+
 

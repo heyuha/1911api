@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>herder</title>
+</head>
+<body>
+<h1>header</h1>
+
+</body>
+</html>
+<script src="/js/jquery.js"></script>
+<script>
+    $.ajax({
+        url:"/header.php",
+        tpye:'get',
+        dataType:"json",
+        headers:{'name':'zhangsan','age':'18'},
+        success:function(res){
+            console.log(res)
+        }
+    })
+</script>
