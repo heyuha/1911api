@@ -66,3 +66,8 @@ Route::get("/goods/goodsinfo","Index\GoodsController@goodsinfo");
 Route::get("/goods/pay","Index\PayController@pay");
 
 
+//h5商城登录
+Route::get("/goods/login","Index\LoginController@login");
+//注册
+Route::get("/goods/reg","Index\LoginController@reg");
+Route::get("/goods","Index\GoodsController@goods");
