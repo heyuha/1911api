@@ -85,7 +85,7 @@
                 </div>
 
                 <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
+                    <a href="https://github.com/login/oauth/authorize?client_id=a31c24bbf92b6c851c30&redirect_uri=http://api.1911.com/oauth/github">GitHub登录</a>
                     <a href="https://laracasts.com">Laracasts</a>
                     <a href="https://laravel-news.com">News</a>
                     <a href="https://blog.laravel.com">Blog</a>

@@ -399,4 +399,72 @@ class TestController extends Controller
     }
 
 
+
+    //登录GitHub
+    public function github(){
+        $code = $_GET['code'];
+        $response = $this->access_token($code);
+
+
+        $response = json_decode($response,true);
+
+        dd($response);
+    }
+    //获取GitHubaccess_token
+    public function access_token($code){
+        $client_id = "a31c24bbf92b6c851c30";
+        $client_secret = "7ccdac10114b070b0fc840edf45f8284c37ea9d3";
+//        //获取access_token地址
+        $url = "https://github.com/login/oauth/access_token";
+
+        $client = new Client();
+
+        $response = $client->request("POST",$url,[
+            'form_params' => [
+                'client_id' => $client_id,
+                'client_secret' => $client_secret,
+                'code' => $code,
+            ],
+        ]);
+//        获取token以后获取用户信息
+        $access_token =  $response->getBody();
+        //        $url = "https://github.com/login/oauth/access_token?code=".$code."&client_id=".$client_id."&client_secret=".$client_secret;
+//        $access_token = file_get_contents($url);
+//        $arr =  json_encode($access_token);
+//        dd($arr);
+
+
+
+//        $url = "https://github.com/login/oauth/access_token?code=".$code."&client_id=".$client_id."&client_secret=".$client_secret;
+//        $access_token = file_get_contents($url);
+        $arr = explode("&",$access_token);
+//        echo 111;
+//        print_r($arr) ;
+        $arr1  =$arr[0];
+        $arr3 = substr($arr1,13);
+//        echo $arr3;die;
+        $res = $this->githubuserinfo($arr3);
+
+        return $res;
+    }
+    //获取用户信息
+    public function githubuserinfo($access_token){
+        //echo $access_token;die;
+        $url = "https://api.github.com/user";
+        $ch = curl_init();
+        curl_setopt($ch,CURLOPT_URL,$url);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+        curl_setopt($ch,CURLOPT_HTTPHEADER,array('Authorization: token '.$access_token,'User-Agent:http://developer.github.com/v3/#user-agent-required'));
+        $response = curl_exec($ch);
+//        dd($response);
+        if(curl_errno($ch)!=0){
+            echo curl_errno($ch);
+            echo curl_error($ch);
+            die;
+        }
+        curl_close($ch);
+        return $response;
+
+    }
+
 }

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Index;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use App\CartModel;
+
 
 class PayController extends Controller
 {
@@ -62,4 +64,12 @@ class PayController extends Controller
         return $sign;
     }
 
+
+
+    //购物车
+    public function cart(){
+        //根据商品id 倒叙获取数据库两条数据
+        $cart=GoodsModel::orderby('goods_id','DESC')->limit(2)->get();
+        return view('/cart/cart',['cart'=>$cart]);
+    }
 }
