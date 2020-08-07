@@ -454,7 +454,7 @@ class TestController extends Controller
         $ch = curl_init();
         curl_setopt($ch,CURLOPT_URL,$url);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
-        curl_setopt($ch,CURLOPT_HTTPHEADER,array('Authorization: token '.$access_token,'User-Agent:http://developer.github.com/v3/#user-agent-required'));
+        curl_setopt($ch,CURLOPT_HTTPHEADER,array('Authorization: token '.$access_token,'User-Agent:https://developer.github.com/v3/users/#get-the-authenticated-user'));
         $response = curl_exec($ch);
 //        dd($response);
         if(curl_errno($ch)!=0){

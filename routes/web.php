@@ -11,6 +11,8 @@
 |
 */
 
+
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -65,6 +67,8 @@ Route::get("/goods/goodsinfo","Index\GoodsController@goodsinfo");
 //支付
 Route::get("/goods/pay","Index\PayController@pay");
 
+//github登录
+Route::get("oauth/github","TestController@github");
 
 //h5商城登录
 Route::get("/goods/login","Index\LoginController@login");
@@ -74,11 +78,12 @@ Route::get("/goods","Index\GoodsController@goods");
 //接入购物车
 Route::get("/cart","Index\CartController@cart");
 Route::get("goods/detail/{id}","Index\CartController@detail");
+//购物车列表
+Route::get("/goods/carts","Index\CartController@carts");
 
 
 
-//github登录
-Route::get("oauth/github","TestController@github");
+
 
 
 

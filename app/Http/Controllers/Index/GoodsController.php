@@ -12,7 +12,7 @@ class GoodsController extends Controller
     public function goods(){
         //最新的三条
         $menu=GoodsModel::orderby('goods_id','DESC')->limit(4)->get();
-        $menu=GoodsModel::orderby('goods_id','DESC')->limit(4)->get();
+//        $menu=GoodsModel::orderby('goods_id','DESC')->limit(4)->get();
         //最热
 //        $is_new=GoodsModel::where('is_new','1')->orderBy('goods_id','DESC')->limit(6)->get();
 //
